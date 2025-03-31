@@ -31,7 +31,7 @@
                 
                 <p style="text-align:center">
                   <a href="mailto:kparant1@jh.edu">Email</a> &nbsp;/&nbsp;
-                  <a href="data/Resume_S+N.pdf">Resume</a> &nbsp;/&nbsp;
+                  <a href="data/kishore_resume_.pdf">Resume</a> &nbsp;/&nbsp;
                   <a href="https://scholar.google.com/citations?user=MBH4NccAAAAJ&hl=en">Scholar</a> &nbsp;/&nbsp;
                   <a href="https://www.linkedin.com/in/kishore-paranthaman-23b554b3/">LinkedIn</a> &nbsp;/&nbsp;
                   <a href="https://github.com/kishoreparanthaman">Github</a>
@@ -45,7 +45,7 @@
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
               <tr>
               <td style="padding:20px;width:100%;vertical-align:middle">
-                <h2>Research</h2>
+                <h2>Research Focus</h2>
                 <p>
                   I am interested in robotics, computer vision, reinforcement learning, deep learning, and learning-based control for robots. Most of my research focuses on perception for manipulators and mobile robots, motivated by the goal of delivering high-quality vision capabilities for robots. Here is information about my projects and internships,
                 </p>
@@ -54,7 +54,10 @@
           </tbody></table>
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
 
-            
+      
+
+
+
 
             <tr onmouseout="publication1_stop()" onmouseover="publication1_start()">
               <td style="padding:20px;width:25%;vertical-align:middle">
@@ -80,6 +83,7 @@
                 <a href="https://ieeexplore.ieee.org/document/10595805">
                   <span class="papertitle">Framework for Quantitative Analysis of Robot Navigation Performance Under Rain Conditions</span>
                 </a>
+                <p>The paper presents a framework for evaluating the performance degradation of autonomous robots navigating under adverse rain conditions. It integrates task-specific and sensor-specific validators to assess how environmental factors like rain affect robot performance. By simulating different rain intensities and analyzing the performance of a 3D lidar-based mapping task, the framework helps predict and understand the impact of rain on robot autonomy. This aids in optimizing robot deployment in outdoor settings with varying weather conditions.</p>
                 <p>Co-authored based on my undergraduate thesis, published at the IEEE ISIE 2024 Conference. Co-authors: Ramu, Ramesh, Paranthaman, Shalman, and Fern.</p>
               </td>
             </tr>
@@ -110,9 +114,12 @@
                 <a href="https://doi.org/10.1109/ACCESS.2024.3363898">
                   <span class="papertitle">Dual Mode PID Controller for Path Planning of Encoder-Less Mobile Robots in Warehouse Environment</span>
                 </a>
+                <p>The paper presents a Dual Mode PID Controller for path planning in warehouse environments, utilizing mobile robots without encoders. The proposed system, designed to enhance cost-efficiency and precision in navigation, integrates visual PID control with gyroscope correction for dynamic trajectory planning. This dual PID system allows for robust detection and successful traversal to designated spots, effectively reducing reliance on expensive encoders by utilizing an eagle-eye camera and an IMU sensor. The system's validation in a simulated environment demonstrates its potential to revolutionize navigation tasks within modern warehouse operations.</p>
                 <p>Published in IEEE Access, vol. 12, pp. 21634-21646, 2024. Co-authors: R. Karthik, R. Menaka, P. Kishore, R. Aswin, and C. Vikram.</p>
               </td>
             </tr>
+
+
 
 
             <tr onmouseout="publication2_stop()" onmouseover="publication2_start()">
@@ -139,10 +146,99 @@
                 <a href="https://dl.acm.org/doi/10.1145/3610419.3610506">
                   <span class="papertitle">Deep Learning-based 6D Pose Estimation of Texture-less Objects for Industrial Cobots</span>
                 </a>
+                <p>The paper introduces a deep learning-based method for 6D pose estimation of textureless objects, which is crucial for enabling industrial collaborative robots (cobots) to accurately identify and manipulate objects within industrial settings. This approach utilizes synthetic data generation for training, overcoming challenges associated with real-world data such as variability in lighting and occlusion. The synthetic data are created using domain randomization and advanced simulators to enhance realism and bridge the gap between virtual and real-world scenarios. This method not only improves the accuracy and efficiency of pose estimation in industrial automation but also reduces costs and complexities associated with data acquisition in diverse environments.</p>
                 <p>Presented at the 2023 6th International Conference on Advances in Robotics (AIR ’23). Co-authors: Charan, Kishore, Aswin, Karthik, Menaka, Thillaivasan.</p>
               </td>
             </tr>
+
             
+            <tr onmouseout="publication2_stop()" onmouseover="publication2_start()">
+              <td style="padding:20px;width:25%;vertical-align:middle">
+                <div class="one">
+                  <div class="two" id="publication2_video">
+                    <video width="100%" autoplay muted loop>
+                      <source src="data/UR5_grasp.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                  <video width="100%" autoplay muted loop>
+                    <source src="data/UR5_grasp.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <script type="text/javascript">
+                  function publication2_start() { document.getElementById('publication2_video').style.opacity = "1"; }
+                  function publication2_stop() { document.getElementById('publication2_video').style.opacity = "0"; }
+                  publication2_stop()
+                </script>
+              </td>
+              <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="">
+                  <span class="papertitle">Enhancing Robotic Arm Grasping through Deep Reinforcement Learning: A Motion Planning Approach </span>
+                </a>
+                <p>This project investigates the application of deep reinforcement learning (DRL) to robotic arm grasping tasks, initially focusing on motion planning and subsequently extending to grasping actions. It evaluates various DRL algorithms, such as Soft Actor-Critic (SAC) and Proximal Policy Optimization (PPO), using a simulated UR5 robot model in a Mujoco environment. The findings highlight PPO as the most effective algorithm for stability, efficiency, and convergence. The project underscores the importance of reward shaping in training performance and outlines future enhancements, including improving real-world applicability and integrating sophisticated motion planning with grasping actions. This project provides a solid foundation for applying DRL to robotic arm tasks in industrial settings. </p>
+              </td>
+            </tr>
+
+
+
+            <tr onmouseout="publication2_stop()" onmouseover="publication2_start()">
+              <td style="padding:20px;width:25%;vertical-align:middle">
+                <div class="one">
+                  <div class="two" id="publication2_video">
+                    <video width="100%" autoplay muted loop>
+                      <source src="data/Panda_door.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                  <video width="100%" autoplay muted loop>
+                    <source src="data/Panda_door.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <script type="text/javascript">
+                  function publication2_start() { document.getElementById('publication2_video').style.opacity = "1"; }
+                  function publication2_stop() { document.getElementById('publication2_video').style.opacity = "0"; }
+                  publication2_stop()
+                </script>
+              </td>
+              <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="">
+                  <span class="papertitle">Reinforcement Learning for Door Opening Using a Simulated Panda Arm with PyTorch and TD3 in Robosuite</span>
+                </a>
+                <p>This project explores the implementation of the Twin Delayed Deep Deterministic (TD3) policy gradient algorithm in PyTorch to train a simulated Panda robotic arm for the task of opening a door. Utilizing Robosuite as the simulation environment, the study aims to evaluate the efficiency and accuracy of the arm's movements in a controlled virtual setting.</p>
+              </td>
+            </tr>
+            
+            
+
+            <tr onmouseout="project4_stop()" onmouseover="project4_start()">
+              <td style="padding:20px;width:25%;vertical-align:middle">
+                <div class="one">
+                  <div class="two" id="project1_video">
+                    <video width="100%" autoplay muted loop>
+                      <source src="data/picknik.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                  <video width="100%" autoplay muted loop>
+                    <source src="data/picknik.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <script type="text/javascript">
+                  function project1_start() { document.getElementById('project1_video').style.opacity = "1"; }
+                  function project1_stop() { document.getElementById('project1_video').style.opacity = "0"; }
+                  project1_stop()
+                </script>
+              </td>
+              <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://github.com/Ack-Robotics/Acktask.git">
+                  <span class="papertitle">Mimicking Hand Gestures Using a Five-Finger Robotic Hand</span>
+                </a>
+                <p>Developed a customized MoveIt package by leveraging the Schunk SVH 5-finger arm description, incorporating 9 degrees of freedom (DOF) for enhanced flexibility and functionality.</p>
+              </td>
+            </tr>
             
      
             
