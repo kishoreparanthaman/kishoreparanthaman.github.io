@@ -113,12 +113,27 @@ h2 {
   width: 160px;
   height: 160px;
   position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.one img,
+.one video {
+  display: block;
+}
+
+.two > a {
+  width: 100%;
 }
 
 .two {
   width: 160px;
   height: 160px;
   position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
   transition: opacity .2s ease-in-out;
   -moz-transition: opacity .2s ease-in-out;
   -webkit-transition: opacity .2s ease-in-out;
@@ -132,4 +147,9 @@ h2 {
 
 span.highlight {
   background-color: #ffffd0;
+}
+
+a.filter.active {
+  color: #f09228;
+  font-weight: 700;
 }

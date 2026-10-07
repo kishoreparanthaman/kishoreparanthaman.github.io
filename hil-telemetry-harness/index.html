@@ -1,0 +1,381 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>HIL Telemetry Harness | Kishore Paranthaman</title>
+<meta name="author" content="Kishore Paranthaman">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="../data/wall-e-icons-logo.avif" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="../stylesheet.css">
+<style>
+/* Project page in the site's own look: Lato, white ground, the site's link blue. */
+:root{
+  --paper:#ffffff; --plate:#ffffff; --ink:#222222; --ink-2:#5a5a5a; --rule:#dddddd;
+  --accent:#1772d0; --accent-soft:#eef5fc;
+  --ok:#1f7a54; --ok-soft:#e2f2ea; --warn:#9a5b00; --warn-soft:#fbefd9;
+  --display:'Lato',Verdana,Helvetica,sans-serif;
+  --body:'Lato',Verdana,Helvetica,sans-serif;
+  --mono:'Lato',Verdana,Helvetica,sans-serif;
+}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.6;}
+.page{max-width:800px;margin:0 auto;padding-inline:20px;padding-block:48px 80px;display:flex;flex-direction:column;gap:56px;}
+section,header{display:flex;flex-direction:column;gap:18px;}
+p,ul,ol,h1,h2,h3,dl,dd,figure{margin:0;}
+p,.prose li{max-width:68ch;}
+h1{font-family:var(--display);font-weight:600;font-size:32px;font-weight:400;line-height:1.15;text-wrap:balance;}
+h2{font-family:var(--display);font-weight:400;font-size:22px;line-height:1.15;text-wrap:balance;padding-top:18px;border-top:1px solid var(--rule);}
+h3{font-family:var(--body);font-weight:700;font-size:15px;margin-top:10px;}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);}
+.lede{font-size:1.2rem;line-height:1.5;max-width:60ch;}
+.phase{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:6px;}
+a{color:var(--accent);}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+code{font-family:Consolas,"Courier New",monospace;font-size:.88em;background:var(--accent-soft);padding:1px 5px;border-radius:3px;overflow-wrap:anywhere;}
+ul,ol{padding-left:1.2em;display:flex;flex-direction:column;gap:8px;}
+strong{font-weight:600;}
+
+.answer{background:var(--accent-soft);border-left:4px solid var(--accent);padding:18px 22px;display:flex;flex-direction:column;gap:8px;max-width:76ch;}
+.answer .q{font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);}
+.answer p{font-size:1.08rem;max-width:none;}
+
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;border-top:1px solid var(--rule);}
+.facts div{padding:14px 16px 14px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:2px;}
+.facts dt{font-size:.86rem;color:var(--ink-2);order:2;}
+.facts dd{font-family:var(--mono);font-weight:500;font-size:1.25rem;font-variant-numeric:tabular-nums;}
+
+.scroll{overflow-x:auto;}
+table{border-collapse:collapse;width:100%;font-size:.92rem;font-variant-numeric:tabular-nums;}
+th,td{text-align:left;padding:9px 14px 9px 0;border-bottom:1px solid var(--rule);vertical-align:top;}
+th{font-family:var(--mono);font-weight:500;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);border-bottom:1px solid var(--ink);white-space:nowrap;}
+td.n,th.n{text-align:right;font-family:var(--mono);white-space:nowrap;}
+tr.pick td{background:var(--accent-soft);}
+tr.pick td:first-child{box-shadow:inset 3px 0 0 var(--accent);padding-left:10px;}
+caption{caption-side:bottom;text-align:left;font-size:.84rem;color:var(--ink-2);padding-top:8px;}
+.tag{display:inline-block;font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;padding:1px 7px;border-radius:3px;white-space:nowrap;}
+.tag.ok{background:var(--ok-soft);color:var(--ok);}
+.tag.warn{background:var(--warn-soft);color:var(--warn);}
+.tag.info{background:var(--accent-soft);color:var(--accent);}
+
+.chain{list-style:none;padding:0;display:flex;flex-direction:column;gap:4px;max-width:68ch;}
+.chain li{min-width:0;background:var(--plate);border:1px solid var(--rule);padding:8px 12px;display:flex;flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:2px 14px;line-height:1.35;}
+.chain li.arrow{background:none;border:0;padding:0;align-self:center;color:var(--ink-2);line-height:1;}
+.chain .stage{font-weight:700;flex:0 0 130px;}
+.chain .what{flex:1 1 240px;}
+.chain .rate{color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.chain .arrow::before{content:"\2193";}
+figure{display:flex;flex-direction:column;gap:8px;}
+figure .img{background:#fff;border:1px solid var(--rule);padding:8px;overflow-x:auto;}
+figure img{display:block;width:100%;height:auto;min-width:640px;}
+figcaption{font-size:.86rem;color:var(--ink-2);max-width:80ch;}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;}
+.cols > div{display:flex;flex-direction:column;gap:10px;}
+footer{font-size:.84rem;color:var(--ink-2);border-top:1px solid var(--rule);padding-top:16px;}
+.lede{font-size:16px;}
+.answer p{font-size:15px;}
+.facts dd{font-weight:700;font-size:18px;}
+.facts dt,figcaption,caption,footer{font-size:13px;}
+td.n,th.n{font-variant-numeric:tabular-nums;}
+video{display:block;width:100%;height:auto;background:#000;}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<header>
+  <p><a href="../index.html">&larr; Kishore Paranthaman</a></p>
+  <span class="eyebrow">Project report &middot; work carried out 27 Sep &ndash; 1 Oct 2026</span>
+  <h1>HIL Telemetry Harness</h1>
+  <p class="lede">A hardware-in-the-loop pipeline that connects a real six-joint robot arm to GPU policy inference, measures the latency of every hop, and tests whether a busy GPU disturbs the arm's control timing.</p>
+  <div class="answer">
+    <span class="q">The question</span>
+    <p>When a GPU is busy running policy inference, does the timing of the robot arm's control link get worse?</p>
+    <span class="q">The answer</span>
+    <p><strong>No, not measurably.</strong> The arm's 15&nbsp;Hz control tick held 66.67&nbsp;ms at the 99th percentile with the GPU idle, running a transformer policy, or running a diffusion policy back to back at the GPU's power limit. What did disturb the loop was <strong>CPU</strong> contention: with every CPU thread saturated, the actuator process woke up to 2.1&nbsp;ms late.</p>
+  </div>
+  <dl class="facts">
+    <div><dd>133&ndash;194 &micro;s</dd><dt>Transport software overhead, p99 (target: under 2&nbsp;ms)</dt></div>
+    <div><dd>5.25 / 6.12 ms</dd><dt>Camera frame to action received, selected policy, p50 / p99</dt></div>
+    <div><dd>66.67 ms</dd><dt>Control tick p99 under every GPU load (target 66.67&nbsp;ms)</dt></div>
+    <div><dd>68.8 ms</dd><dt>Control tick p99 with all 22 CPU threads saturated</dt></div>
+    <div><dd>7 of 7</dd><dt>Injected faults handled as designed on the real arm</dt></div>
+    <div><dd>252 ms</dd><dt>Arm holding after its command source was killed (250&nbsp;ms watchdog)</dt></div>
+  </dl>
+</header>
+
+<section class="prose">
+  <h2>The problem</h2>
+  <p>A learned robot policy runs on a GPU. One call takes anywhere from 2&nbsp;ms to 300&nbsp;ms depending on the model, and the time varies from call to call. The motors, on the other hand, need a new target on a fixed beat. If the control loop waits for inference, every variation in inference time becomes variation in the motion.</p>
+  <p>The usual design answer is to decouple the two. The policy runs asynchronously and returns a <em>chunk</em> of future actions. A separate actuator loop plays the newest chunk out at a fixed rate and never waits for the GPU. The claim this design rests on is that actuator timing is independent of inference load. That claim is usually assumed. This project builds the pipeline, measures it hop by hop, and tests the claim on hardware.</p>
+  <p>Success was defined as measurement and explanation: a latency distribution for every hop, with a stated cause for the shape of each one.</p>
+  <h3>What the project is not</h3>
+  <ul>
+    <li>It is not a manipulation demo. The arm does not pick anything up.</li>
+    <li>It makes no sim-to-real claim. The two learned policies were pretrained on other robots and tasks. They are used as realistic inference <em>load</em> and never drive the arm.</li>
+    <li>There is no physical camera. A simulated twin of the arm renders the frames the policies see.</li>
+    <li>Everything runs on one laptop, so the results describe one host sharing its CPU and GPU between simulator, inference server and actuator.</li>
+  </ul>
+  <div class="scroll">
+  <table>
+    <tr><th>Component</th><th>Used here</th></tr>
+    <tr><td>Arm</td><td>Elephant Robotics myCobot 280 M5, six joints, USB serial at 115200 baud, desk-mounted</td></tr>
+    <tr><td>Host</td><td>Laptop, Intel Core Ultra 9 185H (22 threads; P, E and LP-E cores), NVIDIA RTX 4070 Laptop GPU (8&nbsp;GB, 55&nbsp;W limit), Ubuntu 24.04</td></tr>
+    <tr><td>Inference</td><td>NVIDIA Triton 24.08 serving TensorRT 10.3 engines</td></tr>
+    <tr><td>Simulator</td><td>MuJoCo, offscreen rendering on the same GPU, 200&nbsp;Hz</td></tr>
+    <tr><td>Policies</td><td>Model A: hand-written inverse-kinematics policy, no ML (the control condition). ACT: pretrained transformer policy. Diffusion Policy: pretrained, 10 or 100 denoising steps.</td></tr>
+  </table>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>How the pipeline is built</h2>
+  <ol class="chain" aria-label="Pipeline stages in order">
+    <li><span class="stage">Simulator</span><span class="what">Renders the arm's twin and a target; stamps each frame.</span><span class="rate">200 Hz</span></li>
+    <li class="arrow" aria-hidden="true"></li>
+    <li><span class="stage">UDP + Protobuf</span><span class="what">Observation message into an overwrite-oldest ring buffer.</span><span class="rate">p99 &lt; 0.2 ms</span></li>
+    <li class="arrow" aria-hidden="true"></li>
+    <li><span class="stage">Bridge</span><span class="what">Takes the newest frame on arrival and calls the policy.</span><span class="rate">handoff 0.06 ms</span></li>
+    <li class="arrow" aria-hidden="true"></li>
+    <li><span class="stage">Triton / TensorRT</span><span class="what">Policy inference; returns a chunk of future joint targets.</span><span class="rate">2 &ndash; 300 ms</span></li>
+    <li class="arrow" aria-hidden="true"></li>
+    <li><span class="stage">Actuator</span><span class="what">Safety filter, watchdog, one target per tick, reads angles back.</span><span class="rate">15 Hz</span></li>
+    <li class="arrow" aria-hidden="true"></li>
+    <li><span class="stage">Arm</span><span class="what">USB serial to the controller, then the servo bus.</span><span class="rate">17 ms read</span></li>
+  </ol>
+  <p>Six design decisions carry the result:</p>
+  <ul>
+    <li><strong>Stale data is never queued.</strong> The receive buffer has a fixed size and overwrites its oldest frame. The consumer always takes the newest. A slow consumer loses frames; it never falls behind.</li>
+    <li><strong>The policy and the actuator run on separate clocks.</strong> The policy sends action chunks over UDP whenever it finishes. The actuator resamples the newest chunk onto its own tick grid, so a late chunk changes what is commanded, never when.</li>
+    <li><strong>A safety filter is the last step before the arm.</strong> Every chunk is checked against joint limits, speed limits, the tabletop and the base, whatever produced it.</li>
+    <li><strong>Every hop is timestamped on one monotonic clock.</strong> All processes share a host, so one-way latency is measured directly with no round-trip estimate.</li>
+    <li><strong>A no-ML policy goes through the same serving path as the learned ones.</strong> That separates the cost of serving from the cost of the model.</li>
+    <li><strong>Every hardware step was rehearsed on a software mock of the arm</strong>, later calibrated from the real arm's measured servo response.</li>
+  </ul>
+  <p>Formal measurements follow a fixed benchmark protocol: GPU core and memory clocks locked, CPU governor set to performance. A script checks the state and the formal runs refuse to start without it. The reason for the protocol came out of the first phase.</p>
+</section>
+
+<section class="prose">
+  <span>
+    <span class="phase">Phase 1</span>
+    <h2>Transport baseline, before any model or hardware</h2>
+  </span>
+  <p>The simulator sends frames through the UDP link to a receiver that discards them. This is the control condition for everything later. The target was under 2&nbsp;ms at p99 for pure software overhead (serialize, send, deserialize).</p>
+  <div class="scroll">
+  <table>
+    <tr><th>3 runs &times; 5000 frames</th><th class="n">Default power management</th><th class="n">Clocks locked</th></tr>
+    <tr><td>Achieved simulator rate (target 200&nbsp;Hz)</td><td class="n">198.6 &ndash; 199.8 Hz</td><td class="n">200.00 Hz</td></tr>
+    <tr><td>Missed deadlines</td><td class="n">5 &ndash; 35</td><td class="n">0</td></tr>
+    <tr><td>Software overhead, p99</td><td class="n">169 &ndash; 194 &micro;s</td><td class="n">133 &ndash; 147 &micro;s</td></tr>
+    <tr><td>Render, p99</td><td class="n">4.5 &ndash; 4.9 ms</td><td class="n">1.0 &ndash; 1.3 ms</td></tr>
+    <tr><td>Frame generated to received, p99</td><td class="n">4.5 &ndash; 5.0 ms</td><td class="n">1.10 &ndash; 1.35 ms</td></tr>
+    <tr><td>Frames lost</td><td class="n">0</td><td class="n">0</td></tr>
+  </table>
+  </div>
+  <p>The target was met by about ten times. Two tails needed explaining, and neither had the usual cause.</p>
+  <div class="cols">
+    <div>
+      <h3>The UDP latency had two modes</h3>
+      <p>About 25&nbsp;&micro;s or about 120&nbsp;&micro;s. Garbage collection, socket buffers and the Python interpreter lock were each ruled out. Pinning the receiver to each core type settled it: the slow mode is the receiver thread being woken from sleep. On the low-power cores every packet was slow; a busy-polling receiver on performance cores had none (p99 161&nbsp;&rarr;&nbsp;35&nbsp;&micro;s).</p>
+    </div>
+    <div>
+      <h3>Rendering had a 4 ms tail</h3>
+      <p>At 200&nbsp;Hz the GPU is idle about 97% of the time, so the driver drops it to its lowest power state between frames. Each frame then pays to re-clock. Locking the core clock alone did not help, because the driver still parked the memory clock. Locking both took render p99 from 3.6 to 0.44&nbsp;ms.</p>
+    </div>
+  </div>
+  <figure>
+    <div class="img"><img src="img/render.jpg" alt="Render time distributions with no clock locks, core clock locked, and core plus memory clocks locked. Only the last removes the multi-millisecond tail."></div>
+    <figcaption>Render time at 200&nbsp;Hz under three GPU clock settings. Only locking both clocks removes the tail.</figcaption>
+  </figure>
+  <p>This mattered beyond Phase&nbsp;1. The simulator and the policies share one GPU. Without locked clocks, starting inference would have <em>sped up</em> the simulator by keeping the GPU awake, and the load generator would have been coupled to the system under test. The same effect exists on the CPU: paced calls ran three times slower than back-to-back calls because the processor held an under-used core at low frequency.</p>
+</section>
+
+<section class="prose">
+  <span>
+    <span class="phase">Phase 2</span>
+    <h2>Inference: three policies through one serving path</h2>
+  </span>
+  <p>Both learned models were exported to ONNX, compiled to TensorRT, validated numerically against the original PyTorch model, and served by Triton. Before either was timed, eight predictions were written down from an analytic cost model (operations and bytes moved per call against the GPU's compute and memory-bandwidth ceilings).</p>
+  <div class="scroll">
+  <table>
+    <tr><th>Prediction, written first</th><th>Measured</th><th>Result</th></tr>
+    <tr><td>ACT at half precision: 1.5&ndash;3&nbsp;ms per call</td><td>1.83&nbsp;ms</td><td><span class="tag ok">held</span></td></tr>
+    <tr><td>Diffusion, 100 steps: 230&ndash;280&nbsp;ms, linear in step count</td><td>262&nbsp;ms on the GPU, linear (R&sup2; 0.9997). The served loop took 367&nbsp;ms.</td><td><span class="tag warn">GPU held, loop missed</span></td></tr>
+    <tr><td>8-bit quantization speeds Diffusion 1.6&ndash;1.9&times;, ACT 1.2&ndash;1.6&times;</td><td>1.76&times; and 1.35&ndash;1.49&times;</td><td><span class="tag ok">held</span></td></tr>
+    <tr><td>Batching 4: Diffusion same latency, ACT 3&ndash;4&times; latency</td><td>1.0&times; and 3.3&times;</td><td><span class="tag ok">held</span></td></tr>
+    <tr><td>Diffusion is limited by memory bandwidth</td><td>Memory 82% of peak, compute 12%</td><td><span class="tag ok">held</span></td></tr>
+    <tr><td>ACT is limited by compute</td><td>Neither saturated: memory 40%, compute 22%</td><td><span class="tag warn">wrong</span></td></tr>
+  </table>
+  </div>
+  <p>The two misses were the informative part. The cost model counted the model's weights but not its activations: ACT's image feature maps add about 110&nbsp;MB of memory traffic per call, and its 385 kernels are too short to fill the GPU at batch size one. For Diffusion, the model described the GPU kernels correctly but not the system: a chain of 100 short calls pays a per-call host cost 100 times.</p>
+
+  <h3>Where the time went end to end</h3>
+  <p>The full loop was then closed in simulation: frame rendered, sent over UDP, policy called through Triton, action chunk sent back and executed. Each variant ran for 1000 policy cycles with no chunk lost.</p>
+  <div class="scroll">
+  <table>
+    <tr><th>Policy</th><th>Served as</th><th class="n">Frame to action, p50</th><th class="n">p99</th></tr>
+    <tr><td>Model A (no ML)</td><td>Python backend</td><td class="n">2.12 ms</td><td class="n">2.81 ms</td></tr>
+    <tr><td>ACT</td><td>Float image tensor over gRPC (first version)</td><td class="n">14.42 ms</td><td class="n">15.56 ms</td></tr>
+    <tr><td>ACT</td><td>8-bit image via shared memory, CUDA graph</td><td class="n">5.77 ms</td><td class="n">6.53 ms</td></tr>
+    <tr class="pick"><td>ACT <span class="tag info">selected</span></td><td>JPEG sent as-is, decoded on the GPU, CUDA graph</td><td class="n">5.25 ms</td><td class="n">6.12 ms</td></tr>
+    <tr><td>Diffusion, 10 steps</td><td>Loop inside Triton, CUDA graph</td><td class="n">38.55 ms</td><td class="n">41.41 ms</td></tr>
+    <tr><td>Diffusion, 100 steps</td><td>Loop inside Triton, CUDA graph</td><td class="n">308.8 ms</td><td class="n">328.7 ms</td></tr>
+  </table>
+  </div>
+  <figure>
+    <div class="img"><img src="img/e2e.jpg" alt="Stacked bars of median time per hop for each policy and serving variant. For ACT, the client pre-processing and Triton round-trip segments shrink from 14.4 ms to 5.3 ms across transport variants while the inference portion stays the same."></div>
+    <figcaption>Median time per hop for every variant measured. Across the ACT variants the model is identical; only how the image reaches it changes.</figcaption>
+  </figure>
+  <ul>
+    <li><strong>ACT was slow because of transport.</strong> Of the first version's 14.4&nbsp;ms, about 2&nbsp;ms was inference. The rest was converting and moving a 3.7&nbsp;MB image. Sending the 16.5&nbsp;KB JPEG and decoding it on the GPU made the loop 2.7 times faster with the same model.</li>
+    <li><strong>Diffusion's extra cost was located.</strong> Moving the denoising loop into the server saved only 0.13&nbsp;ms per step, so the network call was not the cause. The server's per-request path was. Running the whole loop as one GPU graph outside Triton reached 2.50&nbsp;ms per step against a GPU-only floor of 2.43. That path was measured but not served.</li>
+    <li><strong>8-bit quantization was rejected on measured quality.</strong> It was as fast as predicted, but ACT's joint outputs moved by 2.6&ndash;3.8&deg; at p99 (half precision: 0.05&deg;), and Diffusion's output drifted about four times its own run-to-run spread. Half precision was kept.</li>
+    <li><strong>Selection: ACT at half precision.</strong> One call fits inside about one 5&nbsp;ms frame and returns 100 future actions. Diffusion at 100 steps acts on an observation roughly half a second old.</li>
+  </ul>
+</section>
+
+<section class="prose">
+  <span>
+    <span class="phase">Phase 3</span>
+    <h2>The real arm: safety layer, fault injection and the independence test</h2>
+  </span>
+
+  <h3>What the hardware dictated</h3>
+  <ul>
+    <li><strong>The control rate is 15&nbsp;Hz, set by the arm.</strong> The arm's controller sends no acknowledgement for a move command and cannot answer a read for about 43&nbsp;ms afterwards. A read sent 20&nbsp;ms after a command was lost in 2&ndash;13 of 40 trials; at 35&nbsp;ms, 0 of 160. A loop that reads every tick therefore needs at least 53&nbsp;ms. The actuation path is about ten times slower than the selected policy's inference.</li>
+    <li><strong>The kinematic model matches the firmware to 0.14&nbsp;mm.</strong></li>
+    <li><strong>Three different joint-limit tables exist for this arm</strong> (published, firmware, Python library). The safety limits take the tightest value per joint.</li>
+    <li><strong>Speed limits are measured.</strong> Every joint follows 40&deg;/s and saturates near 55&ndash;60&deg;/s, so the limits were lowered from the initial guess to 40&deg;/s (large joints) and 50&deg;/s (wrist).</li>
+  </ul>
+
+  <h3>The safety layer</h3>
+  <p>The filter checks every chunk in a fixed order: non-finite values or a malformed duration reject the chunk and the arm holds; joint limits are clipped; a jump of more than 30&deg; from the current command is clipped; speed is rate-limited; and the chunk is cut off at the first target that would bring any link within 4&nbsp;cm of the table. The actuator adds a 250&nbsp;ms watchdog, a tracking check, servo temperature and voltage monitoring, and a stop on any serial error.</p>
+  <p>Faults were injected into a live command stream on the real arm, in one 63-second run:</p>
+  <div class="scroll">
+  <table>
+    <tr><th>Injected fault</th><th>Observed on the arm</th><th class="n">Time to safe state</th></tr>
+    <tr><td>Not-a-number target</td><td>Chunk rejected, arm held, nothing from it sent</td><td class="n">52 ms</td></tr>
+    <tr><td>Step duration of 1000&nbsp;ms</td><td>Chunk rejected, arm held</td><td class="n">52 ms</td></tr>
+    <tr><td>300 random bytes</td><td>Dropped by the receiver before the filter</td><td class="n">&ndash;</td></tr>
+    <tr><td>Joint target 32&deg; past its limit</td><td>Clipped: one bounded 2.1&deg; step, then back on track</td><td class="n">52 ms</td></tr>
+    <tr><td>25&deg; jump on one joint</td><td>Rate-limited: joint peaked at 2.98&deg;, returned within 0.3&nbsp;s</td><td class="n">52 ms</td></tr>
+    <tr><td>Pose below the tabletop</td><td>Clipped: links stayed 13&nbsp;cm above the table</td><td class="n">52 ms</td></tr>
+    <tr><td>Command source killed</td><td>Watchdog: arm held 252&nbsp;ms after the last chunk, nothing sent afterwards</td><td class="n">249 ms</td></tr>
+  </table>
+  </div>
+  <p>All 841 commands sent in that run were re-checked offline against the limits. All passed, and the largest step was exactly 100% of the speed allowance. The mock rehearsal had predicted the same behaviour to within 0.3&deg;.</p>
+  <p>The filter also shows why the learned policies never drove the arm. At the measured speed limits it had to correct 97.4% of ACT's chunks and 52.2% of Diffusion's, against 1.7% for Model A. That is expected for policies trained on other robots.</p>
+
+  <h3>The independence experiment</h3>
+  <p>The arm did the same thing in every run: a slow &plusmn;5&deg; sway of the base joint under the full actuator and safety stack. Only the load changed. Six conditions, two 2-minute runs each, in shuffled order, under the benchmark protocol. Every serial transaction and every inference call was logged on the same clock.</p>
+  <div class="scroll">
+  <table>
+    <tr><th>Condition</th><th class="n">Serial read, p50 / p99</th><th class="n">Tick period, p99</th><th class="n">Wake lateness, p99</th><th class="n">Inference, p50</th></tr>
+    <tr><td>a. Arm only</td><td class="n">17.4 / 22.5 ms</td><td class="n">66.67 ms</td><td class="n">2.0 &micro;s</td><td class="n">&ndash;</td></tr>
+    <tr><td>b. + Model A at 100&nbsp;Hz</td><td class="n">16.6 / 21.5 ms</td><td class="n">66.67 ms</td><td class="n">1.5 &micro;s</td><td class="n">3.97 ms</td></tr>
+    <tr><td>c. + ACT at 50&nbsp;Hz</td><td class="n">16.9 / 22.4 ms</td><td class="n">66.67 ms</td><td class="n">1.3 &micro;s</td><td class="n">3.25 ms</td></tr>
+    <tr><td>d. + Diffusion, 100 steps, back to back</td><td class="n">16.8 / 22.4 ms</td><td class="n">66.67 ms</td><td class="n">1.2 &micro;s</td><td class="n">275 ms</td></tr>
+    <tr class="pick"><td>e. + CPU stress on all 22 threads</td><td class="n">16.4 / 21.4 ms</td><td class="n">68.8 ms</td><td class="n">2.1 ms</td><td class="n">&ndash;</td></tr>
+    <tr><td>f. As d, actuator pinned to one core</td><td class="n">16.6 / 21.8 ms</td><td class="n">66.8 ms</td><td class="n">110 &micro;s</td><td class="n">275 ms</td></tr>
+    <caption>Serial read: time from writing a joint-angle query to parsing the reply. Wake lateness: how late the actuator loop woke after its deadline. Two runs pooled per condition; about 21,000 queries in total, one failed mid-run.</caption>
+  </table>
+  </div>
+  <figure>
+    <div class="img"><img src="img/indep.jpg" alt="Six panels. Serial round-trip distributions overlap for all six conditions. Actuator wake lateness and send-call time show a long tail only for the CPU stress condition and, to a lesser degree, the pinned condition. Inference latency clusters near 3 to 8 ms for Model A and ACT and near 275 ms for Diffusion. A scatter of serial round trip against concurrent inference latency shows no trend."></div>
+    <figcaption>Top row: tail distributions of serial round trip, actuator wake lateness and send-call time per condition. The serial round trip is the same under every load; only CPU stress (purple) and the pinned run (brown) move the host-side timing.</figcaption>
+  </figure>
+  <ul>
+    <li><strong>GPU load made no measurable difference.</strong> Each loaded condition differs from the baseline by less than two runs of the <em>same</em> condition differ from each other (distribution distance 0.05&ndash;0.11 against 0.14 between repeats).</li>
+    <li><strong>No coupling inside a run either.</strong> A read sent while an inference call was in flight took the same time as one sent while the GPU was idle (16.8 against 16.8&nbsp;ms for Diffusion).</li>
+    <li><strong>The spread in read time comes from the arm.</strong> From tick to tick it steps down 3.6&nbsp;ms or up 6.4&nbsp;ms, the same two steps in all 12 runs. Host scheduling noise would not produce that. The exact mechanism inside the controller was not identified.</li>
+    <li><strong>CPU contention is what the actuator feels.</strong> Under condition e the loop woke up to 2.1&nbsp;ms late and the tick stretched by the same amount. The serial read itself did not change and no reads were lost.</li>
+    <li><strong>Pinning without isolating the core made things worse</strong> (110&nbsp;&micro;s against 1.2&nbsp;&micro;s), because the scheduler could no longer move the actuator away from a busy core.</li>
+  </ul>
+
+  <h3>Closed loop on the arm</h3>
+  <p>With the twin as the camera, Model A drove the real arm to hover over a moving virtual target through the full pipeline, while ACT ran on the same frames as load. The loop behaved as the calibrated mock predicted.</p>
+  <div class="scroll">
+  <table>
+    <tr><th></th><th class="n">Real arm</th><th class="n">Mock prediction</th></tr>
+    <tr><td>Tick period, p50 / p99 / max</td><td class="n">66.67 / 66.67 / 66.67 ms</td><td class="n">66.67 ms</td></tr>
+    <tr><td>Frame rendered to serial command, p50</td><td class="n">9.5 ms</td><td class="n">10.2 ms</td></tr>
+    <tr><td>Tool tracking error, p50 / p99</td><td class="n">2.07 / 2.85 cm</td><td class="n">1.9 / 2.7 cm</td></tr>
+    <tr><td>Lowest tool height (goal 10&nbsp;cm)</td><td class="n">9.4 cm</td><td class="n">9.5 cm</td></tr>
+    <tr><td>Duration</td><td class="n">13.9 s, then a health stop</td><td class="n">30 s</td></tr>
+  </table>
+  </div>
+  <p>Both real runs ended after 13&ndash;14&nbsp;s. The supply voltage at the fourth joint's servo sags when it holds the wrist out, and the health check stopped the arm at 10.1&ndash;10.4&nbsp;V against a 10.5&nbsp;V limit. This is a hardware fault in that servo's power path. The stop worked as designed, and the limit was not relaxed to get a longer run. The fault-injection and independence runs used a pose where that joint is unloaded.</p>
+  <p>In the reverse arrangement, where the simulated arm leads and the real arm follows, a 45-second multi-joint motion completed with no faults: the real arm stayed 0.20&nbsp;s behind, with a joint error of 0.58&deg; at the median once that lag is removed.</p>
+  <figure>
+    <video controls muted preload="metadata">
+      <source src="../data/hil_arm_twin.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <figcaption>The arm next to its twin (70&nbsp;s). Left: webcam footage. Right: the twin replaying the joint angles the arm measured at that moment. The clip shows 20&nbsp;s of the full control pipeline, a move down to the hover pose, and the park back to upright.</figcaption>
+  </figure>
+</section>
+
+<section class="prose">
+  <h2>Errors caught before they became conclusions</h2>
+  <p>The project logged 58 issues with diagnosis and resolution. These are the ones where the first reading of the data was wrong.</p>
+  <div class="scroll">
+  <table>
+    <tr><th>What the data seemed to say</th><th>What was actually happening</th><th>How it was caught</th></tr>
+    <tr><td>The compiled ACT engine is off by 0.5&nbsp;rad</td><td>The validation script kept references to a reused output buffer, so every sample held the last sample's output</td><td>The error never changed whatever was changed in the engine. An independent runtime agreed with the engine on every input.</td></tr>
+    <tr><td>There is a constant 5&nbsp;ms wait before each policy call</td><td>Two clocked loops with a fixed phase offset. The number measured the start-up offset.</td><td>p50 and p99 were identical. The bridge was made frame-triggered; the wait became 0.06&nbsp;ms.</td></tr>
+    <tr><td>ACT inference strongly slows serial reads (p&nbsp;=&nbsp;1e-63)</td><td>Selection bias: only a short read can fit between two ACT calls, so "not overlapping" picked fast reads</td><td>The test was redefined as "was a call in flight when the query was written". No association remained.</td></tr>
+    <tr><td>Every loaded condition differs significantly from the baseline</td><td>The two baseline runs happened to be unusually alike, which set the noise floor too low</td><td>The noise floor was redefined as the largest repeat-to-repeat difference across all conditions.</td></tr>
+    <tr><td>The arm hovers 2.5&nbsp;cm low on hardware only</td><td>0.9&deg; of gravity sag on one joint, amplified about eight times because the policy re-planned from the measured pose</td><td>Adding the measured sag to the mock reproduced it. The policy now plans from the commanded pose; confirmed on the arm.</td></tr>
+    <tr><td>The loop skips a command every 2&nbsp;s on hardware only</td><td>The library's temperature and voltage queries took 136&nbsp;ms together</td><td>Replaced with direct serial queries of 13&nbsp;ms each, alternated between ticks.</td></tr>
+  </table>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>Limits and open items</h2>
+  <div class="cols">
+    <div>
+      <h3>What the result does not cover</h3>
+      <ul>
+        <li>Two 2-minute runs per condition, one arm, one pose, one motion, one control rate.</li>
+        <li>An effect on the median serial read smaller than about 1&nbsp;ms would not have been detected.</li>
+        <li>One host. A separate inference machine or a real-time kernel would change the CPU-contention picture.</li>
+        <li>The inference loads in the independence runs were direct calls, without the simulator rendering alongside. The closed-loop runs, which do render, also held 66.67&nbsp;ms ticks.</li>
+        <li>Diffusion ran 0.9% slower with the arm stack running. That rests on a single baseline run and is unconfirmed.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Still open (7 of 58 issues)</h3>
+      <ul>
+        <li><span class="tag warn">hardware</span> The fourth joint's power path. It is the only thing preventing a full-length closed-loop run.</li>
+        <li><span class="tag warn">hardware</span> The arm's USB device occasionally disconnects.</li>
+        <li>The arm drops an occasional query for an unknown reason. A dropped read now costs one measurement and no delay.</li>
+        <li>JPEG compression at quality 85 moves ACT's output by up to 2.7&deg;, about as much as the quantization that was rejected. The shared-memory path avoids it for +0.5&nbsp;ms.</li>
+        <li>About 0.2% of renders take 2.6&ndash;3.3&nbsp;ms in every condition; unexplained, and it never caused a missed deadline.</li>
+        <li>Single corrupted health samples can pass the parser, because the arm's health frames carry no checksum.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="prose">
+  <h2>What is in the repository</h2>
+  <div class="scroll">
+  <table>
+    <tr><th>Path</th><th>Contents</th></tr>
+    <tr><td><code>src/harness/</code></td><td>The pipeline: simulator node, UDP sender and receiver, ring buffer, bridge, kinematics, safety filter, actuator, real and mock arm I/O</td></tr>
+    <tr><td><code>model_repository/</code></td><td>Triton configurations for every served variant of the three policies</td></tr>
+    <tr><td><code>scripts/</code></td><td>One script per experiment, plus export, engine build, validation and profiling tools</td></tr>
+    <tr><td><code>configs/</code></td><td>Safety limits and the fitted servo model of the real arm</td></tr>
+    <tr><td><code>tests/</code></td><td>57 passing tests as of the last recorded run (1 Oct 2026): ring buffer, kinematics, safety filter, actuator on the mock, serial frame parsing, statistics</td></tr>
+    <tr><td><code>results/</code></td><td>One write-up per step, with raw logs, per-run summaries, plots and videos</td></tr>
+    <tr><td><code>issues_log.md</code></td><td>All 58 issues: symptom, diagnosis, resolution, status</td></tr>
+  </table>
+  </div>
+  <p>The Phase&nbsp;3 experiments run without the arm against the mock: <code>phase3_fault_injection.py --arm mock</code>, <code>phase3_closed_loop.py --arm mock</code> and <code>phase3_independence.py --arm mock</code>, with Triton started by <code>scripts/triton_up.sh</code>. Model checkpoints and compiled engines are not in the repository; the export and build scripts regenerate them.</p>
+</section>
+
+<footer>All figures in this report are taken from the write-ups under <code>results/</code> in the project repository. Percentiles are written p50 (median) and p99.</footer>
+
+</div>
+</body>
+</html>

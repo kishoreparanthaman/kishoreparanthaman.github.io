@@ -22,13 +22,12 @@
                 <p class="name" style="text-align: center;">
                   Kishore Paranthaman
                 </p>
-                <p>I am a graduate student in robotics at Johns Hopkins University.
-</p>
-<p>
-  I previously interned at the ROS-Industrial Consortium in Singapore for my undergraduate thesis through the Singapore International Pre-Graduate Award (SIPGA). I have also interned as a Robotics Software Intern at Mowito, the Robert Bosch Center for Cyber-Physical Systems at the Indian Institute of Science, and HCL Technologies.
-
-  I completed my undergraduate degree in Electronics and Communication Engineering from Vellore Institute of Technology.
-                
+                <p>
+                  I am a Founding Robotics Engineer at Scout Robotics. I completed my graduate degree in robotics at Johns Hopkins University.
+                </p>
+                <p>
+                  Previously, I conducted research at the ROS-Industrial Consortium in Singapore for my undergraduate thesis through the Singapore International Pre-Graduate Award (SIPGA). I have also worked as a Robotics Software Intern at Mowito, the Robert Bosch Center for Cyber-Physical Systems at the Indian Institute of Science, and HCL Technologies. I completed my undergraduate degree in Electronics and Communication Engineering from Vellore Institute of Technology.
+                </p>
                 <p style="text-align:center">
                   <a href="mailto:kparant1@jh.edu">Email</a> &nbsp;/&nbsp;
                   <a href="data/kishore_resume_.pdf">Resume</a> &nbsp;/&nbsp;
@@ -53,30 +52,47 @@
             </tr>
           </tbody></table>
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+              <td style="padding:20px 20px 0px 20px;width:100%;vertical-align:middle">
+              <p id="filters" style="text-align:center">
+                <a href="#all" class="filter" data-filter="all">All</a> &nbsp;/&nbsp;
+                <a href="#publications" class="filter" data-filter="publications">Publications</a> &nbsp;/&nbsp;
+                <a href="#projects" class="filter" data-filter="projects">Projects</a> &nbsp;/&nbsp;
+                <a href="#experience" class="filter" data-filter="experience">Professional Experience</a> &nbsp;/&nbsp;
+                <a href="#milestones" class="filter" data-filter="milestones">Milestones and Awards</a>
+              </p>
+              </td>
+            </tr>
+          </tbody></table>
 
-      
+          <div class="category" id="publications" data-category="publications">
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+              <td style="padding:20px;width:100%;vertical-align:middle">
+                <h2>Publications</h2>
+              </td>
+            </tr>
+          </tbody></table>
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
 
-
-
-
-            <tr onmouseout="publication1_stop()" onmouseover="publication1_start()">
+            <tr onmouseout="paper_rain_stop()" onmouseover="paper_rain_start()">
               <td style="padding:20px;width:25%;vertical-align:middle">
                 <div class="one">
-                  <div class="two" id="publication1_video">
+                  <div class="two" id="paper_rain_media">
                     <video width="100%" autoplay muted loop>
-                      <source src="data/ROSI.mp4" type="video/mp4">
+                      <source src="data/rain_navigation.mp4" type="video/mp4">
                       Your browser does not support the video tag.
                     </video>
                   </div>
                   <video width="100%" autoplay muted loop>
-                    <source src="data/ROSI.mp4" type="video/mp4">
+                    <source src="data/rain_navigation.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                   </video>
                 </div>
                 <script type="text/javascript">
-                  function publication1_start() { document.getElementById('publication1_video').style.opacity = "1"; }
-                  function publication1_stop() { document.getElementById('publication1_video').style.opacity = "0"; }
-                  publication1_stop()
+                  function paper_rain_start() { document.getElementById('paper_rain_media').style.opacity = "1"; }
+                  function paper_rain_stop() { document.getElementById('paper_rain_media').style.opacity = "0"; }
+                  paper_rain_stop()
                 </script>
               </td>
               <td style="padding:20px;width:75%;vertical-align:middle">
@@ -87,13 +103,11 @@
                 <p>Co-authored based on my undergraduate thesis, published at the IEEE ISIE 2024 Conference. Co-authors: Ramu, Ramesh, Paranthaman, Shalman, and Fern.</p>
               </td>
             </tr>
-            
 
-
-            <tr onmouseout="publication3_stop()" onmouseover="publication3_start()">
+            <tr onmouseout="paper_pid_stop()" onmouseover="paper_pid_start()">
               <td style="padding:20px;width:25%;vertical-align:middle">
                 <div class="one">
-                  <div class="two" id="publication3_video">
+                  <div class="two" id="paper_pid_media">
                     <video width="100%" autoplay muted loop>
                       <source src="data/flip_3.0.mp4" type="video/mp4">
                       Your browser does not support the video tag.
@@ -105,9 +119,9 @@
                   </video>
                 </div>
                 <script type="text/javascript">
-                  function publication3_start() { document.getElementById('publication3_video').style.opacity = "1"; }
-                  function publication3_stop() { document.getElementById('publication3_video').style.opacity = "0"; }
-                  publication3_stop()
+                  function paper_pid_start() { document.getElementById('paper_pid_media').style.opacity = "1"; }
+                  function paper_pid_stop() { document.getElementById('paper_pid_media').style.opacity = "0"; }
+                  paper_pid_stop()
                 </script>
               </td>
               <td style="padding:20px;width:75%;vertical-align:middle">
@@ -119,13 +133,10 @@
               </td>
             </tr>
 
-
-
-
-            <tr onmouseout="publication2_stop()" onmouseover="publication2_start()">
+            <tr onmouseout="paper_pose_stop()" onmouseover="paper_pose_start()">
               <td style="padding:20px;width:25%;vertical-align:middle">
                 <div class="one">
-                  <div class="two" id="publication2_video">
+                  <div class="two" id="paper_pose_media">
                     <video width="100%" autoplay muted loop>
                       <source src="data/6d_POSE.mp4" type="video/mp4">
                       Your browser does not support the video tag.
@@ -137,9 +148,9 @@
                   </video>
                 </div>
                 <script type="text/javascript">
-                  function publication2_start() { document.getElementById('publication2_video').style.opacity = "1"; }
-                  function publication2_stop() { document.getElementById('publication2_video').style.opacity = "0"; }
-                  publication2_stop()
+                  function paper_pose_start() { document.getElementById('paper_pose_media').style.opacity = "1"; }
+                  function paper_pose_stop() { document.getElementById('paper_pose_media').style.opacity = "0"; }
+                  paper_pose_stop()
                 </script>
               </td>
               <td style="padding:20px;width:75%;vertical-align:middle">
@@ -151,11 +162,75 @@
               </td>
             </tr>
 
-            
-            <tr onmouseout="publication2_stop()" onmouseover="publication2_start()">
+          </tbody></table>
+          </div>
+
+          <div class="category" id="projects" data-category="projects">
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+              <td style="padding:20px;width:100%;vertical-align:middle">
+                <h2>Projects</h2>
+              </td>
+            </tr>
+          </tbody></table>
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+
+            <tr onmouseout="project_hil_stop()" onmouseover="project_hil_start()">
               <td style="padding:20px;width:25%;vertical-align:middle">
                 <div class="one">
-                  <div class="two" id="publication2_video">
+                  <div class="two" id="project_hil_media">
+                    <video width="100%" autoplay muted loop>
+                      <source src="data/hil_arm_twin.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                  <video width="100%" autoplay muted loop>
+                    <source src="data/hil_arm_twin.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <script type="text/javascript">
+                  function project_hil_start() { document.getElementById('project_hil_media').style.opacity = "1"; }
+                  function project_hil_stop() { document.getElementById('project_hil_media').style.opacity = "0"; }
+                  project_hil_stop()
+                </script>
+              </td>
+              <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="hil-telemetry-harness/index.html">
+                  <span class="papertitle">Hardware-in-the-Loop Telemetry Harness: Does GPU Inference Load Disturb a Robot Arm's Control Timing?</span>
+                </a>
+                <p>This project builds a soft real-time pipeline that connects a myCobot 280 arm to policy inference on an RTX 4070 (Triton and TensorRT) and measures the latency of every hop: simulation, UDP and Protobuf transport, inference, and USB serial actuation. Three policies run through the same serving path: a kinematic baseline, a pretrained ACT model and a pretrained Diffusion Policy. A safety filter and watchdog sit in front of the arm, and all seven injected faults were handled as designed on the hardware.</p>
+                <p>On the real arm, the 15 Hz control tick held 66.67 ms at the 99th percentile under every GPU load, including Diffusion Policy running back to back at the GPU's power limit. CPU contention, not GPU load, was what moved the actuator's timing. The <a href="hil-telemetry-harness/index.html">full report</a> covers the method, the results for each phase, and the limits of the conclusion.</p>
+              </td>
+            </tr>
+
+            <tr onmouseout="project_sarrts_stop()" onmouseover="project_sarrts_start()">
+              <td style="padding:20px;width:25%;vertical-align:middle">
+                <div class="one">
+                  <div class="two" id="project_sarrts_media">
+                    <a href="https://www.youtube.com/watch?v=w7hJDYmUDqA"><img src='images/sarrts.jpg' width=100% alt="Two UR robot arms working over a kidney phantom in the lab, with an inset close-up of the instrument on the phantom"></a>
+                  </div>
+                  <img src='images/sarrts.jpg' width=100% alt="">
+                </div>
+                <script type="text/javascript">
+                  function project_sarrts_start() { document.getElementById('project_sarrts_media').style.opacity = "1"; }
+                  function project_sarrts_stop() { document.getElementById('project_sarrts_media').style.opacity = "0"; }
+                  project_sarrts_stop()
+                </script>
+              </td>
+              <td style="padding:20px;width:75%;vertical-align:middle">
+                <a href="https://www.youtube.com/watch?v=w7hJDYmUDqA">
+                  <span class="papertitle">Supervised Autonomous Robotic Renal Tumor Surgery (SARRTS)</span>
+                </a>
+                <p>Research at the Intelligent Medical Robotic Systems and Equipment Lab, Johns Hopkins University. I developed a collision-aware dual-arm manipulation framework on UR5 and UR10e robots for research into autonomous renal tumor resection in constrained surgical workspaces. Its online planning pipeline combines Pilz-generated motion plans with STOMP and CHOMP trajectory optimization to produce smooth, collision-free motions for both arms.</p>
+                <p>For perception, I built a Zivid-based 3D pipeline that estimates tissue depth and registers the tumor rigidly using ICP, supporting image-guided robot targeting and planning. I also designed software interfaces for future integration with the dVRK/da Vinci surgical robotics platform. Watch the <a href="https://www.youtube.com/watch?v=w7hJDYmUDqA">demo video</a>.</p>
+              </td>
+            </tr>
+
+            <tr onmouseout="project_ur5_stop()" onmouseover="project_ur5_start()">
+              <td style="padding:20px;width:25%;vertical-align:middle">
+                <div class="one">
+                  <div class="two" id="project_ur5_media">
                     <video width="100%" autoplay muted loop>
                       <source src="data/UR5_grasp.mp4" type="video/mp4">
                       Your browser does not support the video tag.
@@ -167,9 +242,9 @@
                   </video>
                 </div>
                 <script type="text/javascript">
-                  function publication2_start() { document.getElementById('publication2_video').style.opacity = "1"; }
-                  function publication2_stop() { document.getElementById('publication2_video').style.opacity = "0"; }
-                  publication2_stop()
+                  function project_ur5_start() { document.getElementById('project_ur5_media').style.opacity = "1"; }
+                  function project_ur5_stop() { document.getElementById('project_ur5_media').style.opacity = "0"; }
+                  project_ur5_stop()
                 </script>
               </td>
               <td style="padding:20px;width:75%;vertical-align:middle">
@@ -180,12 +255,10 @@
               </td>
             </tr>
 
-
-
-            <tr onmouseout="publication2_stop()" onmouseover="publication2_start()">
+            <tr onmouseout="project_panda_stop()" onmouseover="project_panda_start()">
               <td style="padding:20px;width:25%;vertical-align:middle">
                 <div class="one">
-                  <div class="two" id="publication2_video">
+                  <div class="two" id="project_panda_media">
                     <video width="100%" autoplay muted loop>
                       <source src="data/Panda_door.mp4" type="video/mp4">
                       Your browser does not support the video tag.
@@ -197,9 +270,9 @@
                   </video>
                 </div>
                 <script type="text/javascript">
-                  function publication2_start() { document.getElementById('publication2_video').style.opacity = "1"; }
-                  function publication2_stop() { document.getElementById('publication2_video').style.opacity = "0"; }
-                  publication2_stop()
+                  function project_panda_start() { document.getElementById('project_panda_media').style.opacity = "1"; }
+                  function project_panda_stop() { document.getElementById('project_panda_media').style.opacity = "0"; }
+                  project_panda_stop()
                 </script>
               </td>
               <td style="padding:20px;width:75%;vertical-align:middle">
@@ -209,13 +282,11 @@
                 <p>This project explores the implementation of the Twin Delayed Deep Deterministic (TD3) policy gradient algorithm in PyTorch to train a simulated Panda robotic arm for the task of opening a door. Utilizing Robosuite as the simulation environment, the study aims to evaluate the efficiency and accuracy of the arm's movements in a controlled virtual setting.</p>
               </td>
             </tr>
-            
-            
 
-            <tr onmouseout="project4_stop()" onmouseover="project4_start()">
+            <tr onmouseout="project_hand_stop()" onmouseover="project_hand_start()">
               <td style="padding:20px;width:25%;vertical-align:middle">
                 <div class="one">
-                  <div class="two" id="project1_video">
+                  <div class="two" id="project_hand_media">
                     <video width="100%" autoplay muted loop>
                       <source src="data/picknik.mp4" type="video/mp4">
                       Your browser does not support the video tag.
@@ -227,9 +298,9 @@
                   </video>
                 </div>
                 <script type="text/javascript">
-                  function project1_start() { document.getElementById('project1_video').style.opacity = "1"; }
-                  function project1_stop() { document.getElementById('project1_video').style.opacity = "0"; }
-                  project1_stop()
+                  function project_hand_start() { document.getElementById('project_hand_media').style.opacity = "1"; }
+                  function project_hand_stop() { document.getElementById('project_hand_media').style.opacity = "0"; }
+                  project_hand_stop()
                 </script>
               </td>
               <td style="padding:20px;width:75%;vertical-align:middle">
@@ -239,25 +310,32 @@
                 <p>Developed a customized MoveIt package by leveraging the Schunk SVH 5-finger arm description, incorporating 9 degrees of freedom (DOF) for enhanced flexibility and functionality.</p>
               </td>
             </tr>
-            
-     
-            
-            
 
-          
-            
-            <tr onmouseout="project2_stop()" onmouseover="project2_start()">
+          </tbody></table>
+          </div>
+
+          <div class="category" id="experience" data-category="experience">
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr>
+              <td style="padding:20px;width:100%;vertical-align:middle">
+                <h2>Professional Experience</h2>
+              </td>
+            </tr>
+          </tbody></table>
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+
+            <tr onmouseout="project_chem_stop()" onmouseover="project_chem_start()">
               <td style="padding:20px;width:25%;vertical-align:middle">
                 <div class="one">
-                  <div class="two" id='project2_image'>
+                  <div class="two" id="project_chem_media">
                     <img src='images/iisc.png' width=100%>
                   </div>
                   <img src='images/iisc.png' width=100%>
                 </div>
                 <script type="text/javascript">
-                  function project2_start() { document.getElementById('project2_image').style.opacity = "1"; }
-                  function project2_stop() { document.getElementById('project2_image').style.opacity = "0"; }
-                  project2_stop()
+                  function project_chem_start() { document.getElementById('project_chem_media').style.opacity = "1"; }
+                  function project_chem_stop() { document.getElementById('project_chem_media').style.opacity = "0"; }
+                  project_chem_stop()
                 </script>
               </td>
               <td style="padding:20px;width:75%;vertical-align:middle">
@@ -267,19 +345,19 @@
                 <p>Conducted visual servoing using ROS MoveIt on KUKA LBR iiwa R820 using Intel Realsense D455 depth camera and resolved an algorithm to use a robotic arm to accomplish chemical experiments like humans.</p>
               </td>
             </tr>
-            
-            <tr onmouseout="project3_stop()" onmouseover="project3_start()">
+
+            <tr onmouseout="project_bin_stop()" onmouseover="project_bin_start()">
               <td style="padding:20px;width:25%;vertical-align:middle">
                 <div class="one">
-                  <div class="two" id='project3_image'>
+                  <div class="two" id="project_bin_media">
                     <img src='images/HCL.png' width=100%>
                   </div>
                   <img src='images/HCL.png' width=100%>
                 </div>
                 <script type="text/javascript">
-                  function project3_start() { document.getElementById('project3_image').style.opacity = "1"; }
-                  function project3_stop() { document.getElementById('project3_image').style.opacity = "0"; }
-                  project3_stop()
+                  function project_bin_start() { document.getElementById('project_bin_media').style.opacity = "1"; }
+                  function project_bin_stop() { document.getElementById('project_bin_media').style.opacity = "0"; }
+                  project_bin_stop()
                 </script>
               </td>
               <td style="padding:20px;width:75%;vertical-align:middle">
@@ -289,52 +367,59 @@
                 <p>3D Bin Pick and Place based on 6D pose estimation.</p>
               </td>
             </tr>
-            
- 
 
-            <tr onmouseout="project1_stop()" onmouseover="project1_start()">
-              <td style="padding:20px;width:25%;vertical-align:middle">
-                <div class="one">
-                  <div class="two" id="project1_video">
-                    <video width="100%" autoplay muted loop>
-                      <source src="data/picknik.mp4" type="video/mp4">
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                  <video width="100%" autoplay muted loop>
-                    <source src="data/picknik.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-                <script type="text/javascript">
-                  function project1_start() { document.getElementById('project1_video').style.opacity = "1"; }
-                  function project1_stop() { document.getElementById('project1_video').style.opacity = "0"; }
-                  project1_stop()
-                </script>
-              </td>
-              <td style="padding:20px;width:75%;vertical-align:middle">
-                <a href="https://github.com/Ack-Robotics/Acktask.git">
-                  <span class="papertitle">Mimicking Hand Gestures Using a Five-Finger Robotic Hand</span>
-                </a>
-                <p>Developed a customized MoveIt package by leveraging the Schunk SVH 5-finger arm description, incorporating 9 degrees of freedom (DOF) for enhanced flexibility and functionality.</p>
-              </td>
-            </tr>
-            
- 
+          </tbody></table>
+          </div>
 
-            <!-- Add remaining projects similarly with respective IDs for scripts and unique project descriptions -->
-            
-            
-    
-          
+          <div class="category" id="milestones" data-category="milestones">
           <table width="100%" align="center" border="0" cellspacing="0" cellpadding="20"><tbody>
             <tr>
               <td>
-                <h2>Miscellanea</h2>
+                <h2>Milestones and Awards</h2>
               </td>
             </tr>
           </tbody></table>
-          <table width="100%" align="center" border="0" cellpadding="20"><tbody>
+          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+            <tr onmouseout="milestone_sipga_stop()" onmouseover="milestone_sipga_start()">
+              <td style="padding:20px;width:25%;vertical-align:middle">
+                <div class="one">
+                  <div class="two" id='milestone_sipga_image'>
+                    <img src='data/astar.jpg' width=100% alt="Standing beside the ROS-Industrial Consortium Asia Pacific sign in Singapore, wearing an A*STAR lanyard">
+                  </div>
+                  <img src='data/astar.jpg' width=100% alt="">
+                </div>
+                <script type="text/javascript">
+                  function milestone_sipga_start() { document.getElementById('milestone_sipga_image').style.opacity = "1"; }
+                  function milestone_sipga_stop() { document.getElementById('milestone_sipga_image').style.opacity = "0"; }
+                  milestone_sipga_stop()
+                </script>
+              </td>
+              <td style="padding:20px;width:75%;vertical-align:middle">
+                <span class="papertitle">Singapore International Pre-Graduate Award (SIPGA), A*STAR</span>
+                <p>Milestone: selected for the SIPGA by A*STAR to conduct my undergraduate thesis research at the ROS-Industrial Consortium Asia Pacific in Singapore (2024). The research led to the <a href="https://ieeexplore.ieee.org/document/10595805">paper on robot navigation under rain conditions</a>, published at IEEE ISIE 2024.</p>
+              </td>
+            </tr>
+
+            <tr onmouseout="award_gsea_stop()" onmouseover="award_gsea_start()">
+              <td style="padding:20px;width:25%;vertical-align:middle">
+                <div class="one">
+                  <div class="two" id='award_gsea_image'>
+                    <img src='images/ack.jpg' width=100% alt="The ACK Robotics team receiving the winner's cheques at the EO Chennai Global Student Entrepreneur Awards">
+                  </div>
+                  <img src='images/ack.jpg' width=100% alt="">
+                </div>
+                <script type="text/javascript">
+                  function award_gsea_start() { document.getElementById('award_gsea_image').style.opacity = "1"; }
+                  function award_gsea_stop() { document.getElementById('award_gsea_image').style.opacity = "0"; }
+                  award_gsea_stop()
+                </script>
+              </td>
+              <td style="padding:20px;width:75%;vertical-align:middle">
+                <span class="papertitle">Global Student Entrepreneur Awards, EO Chennai</span>
+                <p>Position: Winner, with ACK Robotics (January 2024). Prize: a cash award of ₹1 lakh and ₹2.5 lakh worth of coworking space sponsored by Workez. The win advanced the team to the national semi-finals. Event hosted by the Entrepreneurs' Organization, Chennai chapter.</p>
+              </td>
+            </tr>
+
             <tr onmouseout="competition1_stop()" onmouseover="competition1_start()">
               <td style="padding:20px;width:25%;vertical-align:middle">
                 <div class="one">
@@ -412,12 +497,58 @@
                 <a href="certificate_link_here">
                   <span class="papertitle">First Lego League</span>
                 </a>
-                <p>Award: Best Robot Performance Award in India (2015). This is when my journey in robotics began!</p>
+                <p>Award: Best Robot Performance Award in India (2015).</p>
+              </td>
+            </tr>
+
+            <tr onmouseout="milestone_wro_stop()" onmouseover="milestone_wro_start()">
+              <td style="padding:20px;width:25%;vertical-align:middle">
+                <div class="one">
+                  <div class="two" id='milestone_wro_image'>
+                    <img src='images/wro_2014.jpg' width=100% alt="A LEGO robot on the competition table at the World Robot Olympiad in September 2014, with a young competitor and judges around it">
+                  </div>
+                  <img src='images/wro_2014.jpg' width=100% alt="">
+                </div>
+                <script type="text/javascript">
+                  function milestone_wro_start() { document.getElementById('milestone_wro_image').style.opacity = "1"; }
+                  function milestone_wro_stop() { document.getElementById('milestone_wro_image').style.opacity = "0"; }
+                  milestone_wro_stop()
+                </script>
+              </td>
+              <td style="padding:20px;width:75%;vertical-align:middle">
+                <span class="papertitle">World Robot Olympiad</span>
+                <p>Milestone: where my journey in robotics began (2014). I competed with a LEGO robot at the World Robot Olympiad, my first robotics competition.</p>
               </td>
             </tr>
             
             
           </tbody></table>
+          </div>
+          <script type="text/javascript">
+            function showCategory(name) {
+              var sections = document.querySelectorAll('.category');
+              var known = name === 'all';
+              for (var i = 0; i < sections.length; i++) { if (sections[i].getAttribute('data-category') === name) known = true; }
+              if (!known) name = 'all';
+              for (var j = 0; j < sections.length; j++) {
+                sections[j].style.display = (name === 'all' || sections[j].getAttribute('data-category') === name) ? '' : 'none';
+              }
+              var filters = document.querySelectorAll('a.filter');
+              for (var k = 0; k < filters.length; k++) {
+                filters[k].className = filters[k].getAttribute('data-filter') === name ? 'filter active' : 'filter';
+              }
+            }
+            var filterLinks = document.querySelectorAll('a.filter');
+            for (var n = 0; n < filterLinks.length; n++) {
+              filterLinks[n].onclick = function () {
+                var name = this.getAttribute('data-filter');
+                showCategory(name);
+                if (window.history && history.replaceState) { history.replaceState(null, '', name === 'all' ? window.location.pathname : '#' + name); }
+                return false;
+              };
+            }
+            showCategory(window.location.hash ? window.location.hash.substring(1) : 'all');
+          </script>
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
             <tr>
               <td style="padding:0px">
