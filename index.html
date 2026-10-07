@@ -29,7 +29,7 @@
                   Previously, I conducted research at the ROS-Industrial Consortium in Singapore for my undergraduate thesis through the Singapore International Pre-Graduate Award (SIPGA). I have also worked as a Robotics Software Intern at Mowito, the Robert Bosch Center for Cyber-Physical Systems at the Indian Institute of Science, and HCL Technologies. I completed my undergraduate degree in Electronics and Communication Engineering from Vellore Institute of Technology.
                 </p>
                 <p style="text-align:center">
-                  <a href="mailto:kparant1@jh.edu">Email</a> &nbsp;/&nbsp;
+                  <a href="mailto:kishoreparanthaman@gmail.com">Email</a> &nbsp;/&nbsp;
                   <a href="data/kishore_resume_.pdf">Resume</a> &nbsp;/&nbsp;
                   <a href="https://scholar.google.com/citations?user=MBH4NccAAAAJ&hl=en">Scholar</a> &nbsp;/&nbsp;
                   <a href="https://www.linkedin.com/in/kishore-paranthaman-23b554b3/">LinkedIn</a> &nbsp;/&nbsp;
@@ -200,7 +200,7 @@
                   <span class="papertitle">Hardware-in-the-Loop Telemetry Harness: Does GPU Inference Load Disturb a Robot Arm's Control Timing?</span>
                 </a>
                 <p>This project builds a soft real-time pipeline that connects a myCobot 280 arm to policy inference on an RTX 4070 (Triton and TensorRT) and measures the latency of every hop: simulation, UDP and Protobuf transport, inference, and USB serial actuation. Three policies run through the same serving path: a kinematic baseline, a pretrained ACT model and a pretrained Diffusion Policy. A safety filter and watchdog sit in front of the arm, and all seven injected faults were handled as designed on the hardware.</p>
-                <p>On the real arm, the 15 Hz control tick held 66.67 ms at the 99th percentile under every GPU load, including Diffusion Policy running back to back at the GPU's power limit. CPU contention, not GPU load, was what moved the actuator's timing. The <a href="hil-telemetry-harness/index.html">full report</a> covers the method, the results for each phase, and the limits of the conclusion.</p>
+                <p>On the real arm, the 15 Hz control tick held 66.67 ms at the 99th percentile whether the GPU was idle or running policy inference, including Diffusion Policy running back to back at the GPU's power limit. CPU contention, not GPU load, was what moved the actuator's timing. The <a href="hil-telemetry-harness/index.html">full report</a> covers the method, the results for each phase, and the limits of the conclusion.</p>
               </td>
             </tr>
 
@@ -342,7 +342,9 @@
                 <a href="https://drive.google.com/file/d/14F9vKpn5003j8k2ADMnK0UwLuQ1t_hcS/view?usp=drive_link">
                   <span class="papertitle">Chemistry Lab Assistive Robot</span>
                 </a>
-                <p>Conducted visual servoing using ROS MoveIt on KUKA LBR iiwa R820 using Intel Realsense D455 depth camera and resolved an algorithm to use a robotic arm to accomplish chemical experiments like humans.</p>
+                <p><em>DST-INSPIRE Project Intern, Robert Bosch Center for Cyber-Physical Systems, Indian Institute of Science, Bangalore (Aug 2022 &ndash; Apr 2023)</em></p>
+                <p>I designed and developed the Open Science Lab, an autonomous, robot-operated chemistry laboratory. I planned the workspace layout and integrated a KUKA LBR iiwa R820 arm with an Intel RealSense D455 camera for closed-loop visual servoing. Using ROS MoveIt, I built workspace-aware motion planning that optimizes collision-free trajectories between the fixed lab apparatuses, for both teleoperated and semi-autonomous execution of chemical experiments.</p>
+                <p>STag fiducial markers gave robust 6-DOF pose estimation with objects occluded by up to 30%, which reduced the error rate in delicate handling tasks.</p>
               </td>
             </tr>
 
@@ -364,7 +366,9 @@
                 <a href="https://drive.google.com/file/d/1zbF0K_ZhqqOh3T88rSeD5nOcD4FQRhQ5/view?usp=share_link">
                   <span class="papertitle">3D Bin Picking Using xArm5</span>
                 </a>
-                <p>3D Bin Pick and Place based on 6D pose estimation.</p>
+                <p><em>HCL Technologies Ltd, Chennai, India</em></p>
+                <p>I engineered a vision-guided bin-picking pipeline that integrates Mask R-CNN and YOLOv5 perception models with the UFactory xArm5, using ROS MoveIt for real-time motion planning. I also developed a synthetic data generation pipeline in Unreal Engine to train NVIDIA's Deep Object Pose Estimation (DOPE) on textureless industrial components, reaching 74% accuracy in deployments on physical hardware.</p>
+                <p>This work led to the co-authored paper <a href="https://dl.acm.org/doi/10.1145/3610419.3610506">Deep Learning-based 6D Pose Estimation of Texture-less Objects for Industrial Cobots</a>, presented at the 2023 6th International Conference on Advances in Robotics (AIR '23).</p>
               </td>
             </tr>
 

@@ -4,6 +4,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>HIL Telemetry Harness | Kishore Paranthaman</title>
 <meta name="author" content="Kishore Paranthaman">
+<meta name="description" content="A hardware-in-the-loop pipeline that connects a real six-joint robot arm to GPU policy inference, measures the latency of every hop, and tests whether a busy GPU disturbs the arm's control timing.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HIL Telemetry Harness">
+<meta property="og:description" content="Does GPU inference load disturb a robot arm's control timing? A hardware-in-the-loop pipeline, measured hop by hop on a real six-joint arm.">
+<meta property="og:url" content="https://kishoreparanthaman.github.io/hil-telemetry-harness/">
+<meta property="og:image" content="https://kishoreparanthaman.github.io/hil-telemetry-harness/img/arm_twin.jpg">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="../data/wall-e-icons-logo.avif" type="image/x-icon">
 <link rel="stylesheet" type="text/css" href="../stylesheet.css">
@@ -76,6 +82,7 @@ footer{font-size:.84rem;color:var(--ink-2);border-top:1px solid var(--rule);padd
 .facts dt,figcaption,caption,footer{font-size:13px;}
 td.n,th.n{font-variant-numeric:tabular-nums;}
 video{display:block;width:100%;height:auto;background:#000;}
+table code{white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -91,12 +98,12 @@ video{display:block;width:100%;height:auto;background:#000;}
     <span class="q">The question</span>
     <p>When a GPU is busy running policy inference, does the timing of the robot arm's control link get worse?</p>
     <span class="q">The answer</span>
-    <p><strong>No, not measurably.</strong> The arm's 15&nbsp;Hz control tick held 66.67&nbsp;ms at the 99th percentile with the GPU idle, running a transformer policy, or running a diffusion policy back to back at the GPU's power limit. What did disturb the loop was <strong>CPU</strong> contention: with every CPU thread saturated, the actuator process woke up to 2.1&nbsp;ms late.</p>
+    <p><strong>No, not measurably.</strong> The arm's 15&nbsp;Hz control tick held 66.67&nbsp;ms at the 99th percentile with the GPU idle, running a transformer policy, or running a diffusion policy back to back at the GPU's power limit. What did disturb the loop was <strong>CPU</strong> contention: with every CPU thread saturated, the actuator process woke 2.1&nbsp;ms late at the 99th percentile.</p>
   </div>
   <dl class="facts">
-    <div><dd>133&ndash;194 &micro;s</dd><dt>Transport software overhead, p99 (target: under 2&nbsp;ms)</dt></div>
-    <div><dd>5.25 / 6.12 ms</dd><dt>Camera frame to action received, selected policy, p50 / p99</dt></div>
-    <div><dd>66.67 ms</dd><dt>Control tick p99 under every GPU load (target 66.67&nbsp;ms)</dt></div>
+    <div><dd>&lt; 0.2 ms</dd><dt>Transport software overhead, p99, in every run (target: under 2&nbsp;ms)</dt></div>
+    <div><dd>5.25 / 6.12 ms</dd><dt>Frame rendered to action received, selected policy, p50 / p99</dt></div>
+    <div><dd>66.67 ms</dd><dt>Control tick p99 under every GPU load, actuator left unpinned (target 66.67&nbsp;ms)</dt></div>
     <div><dd>68.8 ms</dd><dt>Control tick p99 with all 22 CPU threads saturated</dt></div>
     <div><dd>7 of 7</dd><dt>Injected faults handled as designed on the real arm</dt></div>
     <div><dd>252 ms</dd><dt>Arm holding after its command source was killed (250&nbsp;ms watchdog)</dt></div>
@@ -155,14 +162,14 @@ video{display:block;width:100%;height:auto;background:#000;}
 </section>
 
 <section class="prose">
-  <span>
+  <div>
     <span class="phase">Phase 1</span>
     <h2>Transport baseline, before any model or hardware</h2>
-  </span>
+  </div>
   <p>The simulator sends frames through the UDP link to a receiver that discards them. This is the control condition for everything later. The target was under 2&nbsp;ms at p99 for pure software overhead (serialize, send, deserialize).</p>
   <div class="scroll">
   <table>
-    <tr><th>3 runs &times; 5000 frames</th><th class="n">Default power management</th><th class="n">Clocks locked</th></tr>
+    <tr><th>3 runs &times; 5000 frames</th><th class="n">Default power management</th><th class="n">Benchmark protocol (clocks locked)</th></tr>
     <tr><td>Achieved simulator rate (target 200&nbsp;Hz)</td><td class="n">198.6 &ndash; 199.8 Hz</td><td class="n">200.00 Hz</td></tr>
     <tr><td>Missed deadlines</td><td class="n">5 &ndash; 35</td><td class="n">0</td></tr>
     <tr><td>Software overhead, p99</td><td class="n">169 &ndash; 194 &micro;s</td><td class="n">133 &ndash; 147 &micro;s</td></tr>
@@ -183,23 +190,27 @@ video{display:block;width:100%;height:auto;background:#000;}
     </div>
   </div>
   <figure>
-    <div class="img"><img src="img/render.jpg" alt="Render time distributions with no clock locks, core clock locked, and core plus memory clocks locked. Only the last removes the multi-millisecond tail."></div>
-    <figcaption>Render time at 200&nbsp;Hz under three GPU clock settings. Only locking both clocks removes the tail.</figcaption>
+    <div class="img"><img src="img/render_default.jpg" alt="Render time under default GPU power management for four conditions. The two loops paced at 200 Hz have whiskers reaching 3.5 ms and outliers past the 5 ms period; the unpaced loop and the loop with the GPU kept busy stay under 1 ms."></div>
+    <figcaption>Default power management. The two loops paced at 200&nbsp;Hz (sleeping or spinning the CPU between frames) have a tail of several milliseconds, reaching the 5&nbsp;ms frame period. Rendering back to back, or with a second process keeping the GPU busy, does not.</figcaption>
+  </figure>
+  <figure>
+    <div class="img"><img src="img/render.jpg" alt="The same four conditions with the GPU core and memory clocks locked. All four stay under 1 ms apart from a few outliers near 3 ms."></div>
+    <figcaption>The same four conditions with both GPU clocks locked. The paced loops now render as fast as the others. The few points near 3&nbsp;ms appear in every condition, including unpaced, at about 0.2% of frames; they are not a power-state effect and remain unexplained.</figcaption>
   </figure>
   <p>This mattered beyond Phase&nbsp;1. The simulator and the policies share one GPU. Without locked clocks, starting inference would have <em>sped up</em> the simulator by keeping the GPU awake, and the load generator would have been coupled to the system under test. The same effect exists on the CPU: paced calls ran three times slower than back-to-back calls because the processor held an under-used core at low frequency.</p>
 </section>
 
 <section class="prose">
-  <span>
+  <div>
     <span class="phase">Phase 2</span>
     <h2>Inference: three policies through one serving path</h2>
-  </span>
-  <p>Both learned models were exported to ONNX, compiled to TensorRT, validated numerically against the original PyTorch model, and served by Triton. Before either was timed, eight predictions were written down from an analytic cost model (operations and bytes moved per call against the GPU's compute and memory-bandwidth ceilings).</p>
+  </div>
+  <p>Both learned models were exported to ONNX, compiled to TensorRT, validated numerically against the original PyTorch model, and served by Triton. Before either was timed, eight predictions were written down from an analytic cost model (operations and bytes moved per call against the GPU's compute and memory-bandwidth ceilings). The table shows the main ones.</p>
   <div class="scroll">
   <table>
     <tr><th>Prediction, written first</th><th>Measured</th><th>Result</th></tr>
     <tr><td>ACT at half precision: 1.5&ndash;3&nbsp;ms per call</td><td>1.83&nbsp;ms</td><td><span class="tag ok">held</span></td></tr>
-    <tr><td>Diffusion, 100 steps: 230&ndash;280&nbsp;ms, linear in step count</td><td>262&nbsp;ms on the GPU, linear (R&sup2; 0.9997). The served loop took 367&nbsp;ms.</td><td><span class="tag warn">GPU held, loop missed</span></td></tr>
+    <tr><td>Diffusion, 100 steps: 230&ndash;280&nbsp;ms, linear in step count</td><td>262&nbsp;ms on the GPU, linear (R&sup2; 0.9997). The full loop, driven from the host, took 367&nbsp;ms.</td><td><span class="tag warn">GPU held, loop missed</span></td></tr>
     <tr><td>8-bit quantization speeds Diffusion 1.6&ndash;1.9&times;, ACT 1.2&ndash;1.6&times;</td><td>1.76&times; and 1.35&ndash;1.49&times;</td><td><span class="tag ok">held</span></td></tr>
     <tr><td>Batching 4: Diffusion same latency, ACT 3&ndash;4&times; latency</td><td>1.0&times; and 3.3&times;</td><td><span class="tag ok">held</span></td></tr>
     <tr><td>Diffusion is limited by memory bandwidth</td><td>Memory 82% of peak, compute 12%</td><td><span class="tag ok">held</span></td></tr>
@@ -209,7 +220,7 @@ video{display:block;width:100%;height:auto;background:#000;}
   <p>The two misses were the informative part. The cost model counted the model's weights but not its activations: ACT's image feature maps add about 110&nbsp;MB of memory traffic per call, and its 385 kernels are too short to fill the GPU at batch size one. For Diffusion, the model described the GPU kernels correctly but not the system: a chain of 100 short calls pays a per-call host cost 100 times.</p>
 
   <h3>Where the time went end to end</h3>
-  <p>The full loop was then closed in simulation: frame rendered, sent over UDP, policy called through Triton, action chunk sent back and executed. Each variant ran for 1000 policy cycles with no chunk lost.</p>
+  <p>The full loop was then closed in simulation: frame rendered, sent over UDP, policy called through Triton, action chunk sent back and executed. Each variant ran for 1000 policy cycles (300 for the 100-step Diffusion runs) with no chunk lost.</p>
   <div class="scroll">
   <table>
     <tr><th>Policy</th><th>Served as</th><th class="n">Frame to action, p50</th><th class="n">p99</th></tr>
@@ -223,10 +234,10 @@ video{display:block;width:100%;height:auto;background:#000;}
   </div>
   <figure>
     <div class="img"><img src="img/e2e.jpg" alt="Stacked bars of median time per hop for each policy and serving variant. For ACT, the client pre-processing and Triton round-trip segments shrink from 14.4 ms to 5.3 ms across transport variants while the inference portion stays the same."></div>
-    <figcaption>Median time per hop for every variant measured. Across the ACT variants the model is identical; only how the image reaches it changes.</figcaption>
+    <figcaption>Median time per hop for every variant measured. Across the ACT variants the model's weights are identical; what changes is how the image reaches it and how the engine is launched.</figcaption>
   </figure>
   <ul>
-    <li><strong>ACT was slow because of transport.</strong> Of the first version's 14.4&nbsp;ms, about 2&nbsp;ms was inference. The rest was converting and moving a 3.7&nbsp;MB image. Sending the 16.5&nbsp;KB JPEG and decoding it on the GPU made the loop 2.7 times faster with the same model.</li>
+    <li><strong>ACT was slow because of transport.</strong> Of the first version's 14.4&nbsp;ms, about 2&nbsp;ms was inference. Most of the rest was converting and moving a 3.7&nbsp;MB image. Sending the 16.5&nbsp;KB JPEG and decoding it on the GPU made the loop 2.7 times faster with the same model.</li>
     <li><strong>Diffusion's extra cost was located.</strong> Moving the denoising loop into the server saved only 0.13&nbsp;ms per step, so the network call was not the cause. The server's per-request path was. Running the whole loop as one GPU graph outside Triton reached 2.50&nbsp;ms per step against a GPU-only floor of 2.43. That path was measured but not served.</li>
     <li><strong>8-bit quantization was rejected on measured quality.</strong> It was as fast as predicted, but ACT's joint outputs moved by 2.6&ndash;3.8&deg; at p99 (half precision: 0.05&deg;), and Diffusion's output drifted about four times its own run-to-run spread. Half precision was kept.</li>
     <li><strong>Selection: ACT at half precision.</strong> One call fits inside about one 5&nbsp;ms frame and returns 100 future actions. Diffusion at 100 steps acts on an observation roughly half a second old.</li>
@@ -234,10 +245,10 @@ video{display:block;width:100%;height:auto;background:#000;}
 </section>
 
 <section class="prose">
-  <span>
+  <div>
     <span class="phase">Phase 3</span>
     <h2>The real arm: safety layer, fault injection and the independence test</h2>
-  </span>
+  </div>
 
   <h3>What the hardware dictated</h3>
   <ul>
@@ -263,7 +274,7 @@ video{display:block;width:100%;height:auto;background:#000;}
   </table>
   </div>
   <p>All 841 commands sent in that run were re-checked offline against the limits. All passed, and the largest step was exactly 100% of the speed allowance. The mock rehearsal had predicted the same behaviour to within 0.3&deg;.</p>
-  <p>The filter also shows why the learned policies never drove the arm. At the measured speed limits it had to correct 97.4% of ACT's chunks and 52.2% of Diffusion's, against 1.7% for Model A. That is expected for policies trained on other robots.</p>
+  <p>The filter also shows why the learned policies never drove the arm. In 20-second simulated runs at the measured speed limits, it had to correct 97.4% of ACT's chunks and 52.2% of Diffusion's, against 1.7% for Model A. That is expected for policies trained on other robots.</p>
 
   <h3>The independence experiment</h3>
   <p>The arm did the same thing in every run: a slow &plusmn;5&deg; sway of the base joint under the full actuator and safety stack. Only the load changed. Six conditions, two 2-minute runs each, in shuffled order, under the benchmark protocol. Every serial transaction and every inference call was logged on the same clock.</p>
@@ -287,7 +298,7 @@ video{display:block;width:100%;height:auto;background:#000;}
     <li><strong>GPU load made no measurable difference.</strong> Each loaded condition differs from the baseline by less than two runs of the <em>same</em> condition differ from each other (distribution distance 0.05&ndash;0.11 against 0.14 between repeats).</li>
     <li><strong>No coupling inside a run either.</strong> A read sent while an inference call was in flight took the same time as one sent while the GPU was idle (16.8 against 16.8&nbsp;ms for Diffusion).</li>
     <li><strong>The spread in read time comes from the arm.</strong> From tick to tick it steps down 3.6&nbsp;ms or up 6.4&nbsp;ms, the same two steps in all 12 runs. Host scheduling noise would not produce that. The exact mechanism inside the controller was not identified.</li>
-    <li><strong>CPU contention is what the actuator feels.</strong> Under condition e the loop woke up to 2.1&nbsp;ms late and the tick stretched by the same amount. The serial read itself did not change and no reads were lost.</li>
+    <li><strong>CPU contention is what the actuator feels.</strong> Under condition e the loop woke 2.1&nbsp;ms late at p99, and the tick period's p99 stretched by the same amount. The serial read itself did not change and no reads were lost.</li>
     <li><strong>Pinning without isolating the core made things worse</strong> (110&nbsp;&micro;s against 1.2&nbsp;&micro;s), because the scheduler could no longer move the actuator away from a busy core.</li>
   </ul>
 
@@ -306,7 +317,7 @@ video{display:block;width:100%;height:auto;background:#000;}
   <p>Both real runs ended after 13&ndash;14&nbsp;s. The supply voltage at the fourth joint's servo sags when it holds the wrist out, and the health check stopped the arm at 10.1&ndash;10.4&nbsp;V against a 10.5&nbsp;V limit. This is a hardware fault in that servo's power path. The stop worked as designed, and the limit was not relaxed to get a longer run. The fault-injection and independence runs used a pose where that joint is unloaded.</p>
   <p>In the reverse arrangement, where the simulated arm leads and the real arm follows, a 45-second multi-joint motion completed with no faults: the real arm stayed 0.20&nbsp;s behind, with a joint error of 0.58&deg; at the median once that lag is removed.</p>
   <figure>
-    <video controls muted preload="metadata">
+    <video controls muted preload="metadata" poster="img/arm_twin.jpg">
       <source src="../data/hil_arm_twin.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -344,11 +355,12 @@ video{display:block;width:100%;height:auto;background:#000;}
       </ul>
     </div>
     <div>
-      <h3>Still open (7 of 58 issues)</h3>
+      <h3>Still open</h3>
+      <p>Seven of the 58 logged issues remain open. These are the ones that bear on the results:</p>
       <ul>
         <li><span class="tag warn">hardware</span> The fourth joint's power path. It is the only thing preventing a full-length closed-loop run.</li>
         <li><span class="tag warn">hardware</span> The arm's USB device occasionally disconnects.</li>
-        <li>The arm drops an occasional query for an unknown reason. A dropped read now costs one measurement and no delay.</li>
+        <li>The arm drops an occasional query for an unknown reason. This one is closed for the control loop, since a dropped read now costs one measurement and no delay, but its cause inside the arm was not found.</li>
         <li>JPEG compression at quality 85 moves ACT's output by up to 2.7&deg;, about as much as the quantization that was rejected. The shared-memory path avoids it for +0.5&nbsp;ms.</li>
         <li>About 0.2% of renders take 2.6&ndash;3.3&nbsp;ms in every condition; unexplained, and it never caused a missed deadline.</li>
         <li>Single corrupted health samples can pass the parser, because the arm's health frames carry no checksum.</li>
